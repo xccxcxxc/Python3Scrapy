@@ -26,3 +26,25 @@ def scrape_page(url):
 def scrape_index(page):
     index_url = f'{BASE_URL}/page/{page}'
     return scrape_page(index_url)
+
+
+def parse_index(html):
+    pattern = re.compile('<a.*?href="(.*?)".*class="name">')
+    items = re.findall(pattern, html)
+    if not items:
+        return []
+    for item in items:
+        detail_url = urljoin(BASE_URL, item)
+        logging.info('get detail url %s', detail_url)
+        yield detail_url
+
+
+def main():
+    for page in range(1, TOTAL_PAGE + 1):
+        index_html = scrape_index(page)
+        detail_urls = parse_index(index_html)
+        logging.info('detail urls %s', list(detail_urls))
+
+
+if __name__ == '__main__':
+    main()
