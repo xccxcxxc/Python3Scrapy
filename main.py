@@ -8,3 +8,16 @@ logging.basicConfig(level=logging.INFO,
 
 BASE_URL = 'https://ssr1.scrape.center'
 TOTAL_PAGE = 10
+
+
+def scrape_page(url):
+    logging.info('scraping %s...', url)
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response.text
+        logging.error('get invalid status code %s while scraping %s',
+                      response.status_code, url)
+    except requests.RequestException:
+        logging.error('error occurred while scraping %s', url,
+                      exc_info=True)
