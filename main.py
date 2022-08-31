@@ -21,3 +21,8 @@ def scrape_page(url):
     except requests.RequestException:
         logging.error('error occurred while scraping %s', url,
                       exc_info=True)
+
+
+def scrape_index(page):
+    index_url = f'{BASE_URL}/page/{page}'
+    return scrape_page(index_url)
