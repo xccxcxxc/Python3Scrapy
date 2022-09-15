@@ -58,7 +58,7 @@ def parse_detail(html):
         .strip() if re.search(cover_pattern, html) else None
     name = re.search(name_pattern, html).group(
         1).strip() if re.search(name_pattern, html) else None
-    categories = re.findall(categories_pattern.html) if re.findall(
+    categories = re.findall(categories_pattern, html) if re.findall(
         categories_pattern, html) else None
     published_at = re.search(published_at_pattern, html).group(
         1) if re.search(published_at_pattern, html) else None
