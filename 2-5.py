@@ -64,7 +64,7 @@ def parse_detail(html):
         1) if re.search(published_at_pattern, html) else None
     drama = re.search(drama_pattern, html).group(1) \
         .strip() if re.search(drama_pattern, html) else None
-    sore = float(re.search(score_pattern, html).group(1).strip()) \
+    score = float(re.search(score_pattern, html).group(1).strip()) \
         if re.search(score_pattern, html) else None
 
     return {
