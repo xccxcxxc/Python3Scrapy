@@ -1,5 +1,6 @@
 import requests
 import logging
+import pymongo
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s: %(message)s')
@@ -34,6 +35,21 @@ def scrape_detail(id):
     return scrape_api(url)
 
 
+MONGO_CONNETTION_STRING = 'mongodb://localhost:27017'
+MONGO_DB_NAME = 'movies'
+MONGO_COLLECTION_NAME = 'movies'
+
+client = pymongo.MongoClient(MONGO_CONNETTION_STRING)
+db = client[MONGO_DB_NAME]
+collection = db[MONGO_COLLECTION_NAME]
+
+
+def save_data(data):
+    collection.update_one({'name': data.get('name')},
+                          {'$set': data},
+                          upsert=True)
+
+
 TOTAL_PAGE = 1
 
 
@@ -44,6 +60,8 @@ def main():
             id = item.get('id')
             detail_data = scrape_detail(id)
             logging.info('detail data %s', detail_data)
+            save_data(detail_data)
+            logging.info('data saved successfully.')
 
 
 if __name__ == '__main__':
