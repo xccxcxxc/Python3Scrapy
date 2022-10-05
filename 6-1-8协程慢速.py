@@ -1,0 +1,23 @@
+import requests
+import time
+import asyncio
+
+TOTAL_NUMBER = 10
+URL = 'https://www.httpbin.org/delay/5'
+
+start_time = time.time()
+
+
+async def request():
+    url = URL
+    print('Waiting for', url)
+    response = requests.get(url)
+    print('Get response from', url, 'response', response)
+
+
+tasks = [asyncio.ensure_future(request()) for _ in range(TOTAL_NUMBER)]
+loop = asyncio.get_event_loop()
+loop.run_until_complete(asyncio.wait(tasks))
+
+end_time = time.time()
+print('Cost time:', end_time - start_time)
