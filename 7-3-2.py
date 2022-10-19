@@ -7,7 +7,7 @@ width, height = 1366, 768
 async def main():
     browser = await launch()
     page = await browser.newPage()
-    await page.setViewport({'width': width, 'heigh': height})
+    await page.setViewport({'width': width, 'height': height})
     await page.goto('https://spa2.scrape.center/')
     await page.waitForSelector('.item .name')
     await asyncio.sleep(2)
