@@ -48,6 +48,11 @@ def parse_index():
         yield urljoin(INDEX_URL, href)
 
 
+def scrape_detail(url):
+    scrape_page(url, condition=EC.visibility_of_element_located,
+                locator=(By.TAG_NAME, 'h2'))
+
+
 def main():
     try:
         for page in range(1, TOTAL_PAGE + 1):
