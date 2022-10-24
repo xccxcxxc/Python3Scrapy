@@ -5,6 +5,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.chrome.options import Options
 
+from urllib.parse import urljoin
+
 import logging
 
 logging.basicConfig(level=logging.INFO,
@@ -38,7 +40,7 @@ def scrape_index(page):
                 locator=(By.CSS_SELECTOR, '#index .item'))
 
 
-from urllib.parse import urljoin
+
 
 
 def parse_index():
