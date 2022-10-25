@@ -1,5 +1,4 @@
 from selenium import webdriver
-from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -7,22 +6,35 @@ from selenium.webdriver.chrome.options import Options
 
 from urllib.parse import urljoin
 
+from os import makedirs
+from os.path import exists
+
 import logging
+import json
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s:%(message)s')
+
+RESULT_DIR = 'results'
+
+exists(RESULT_DIR) or makedirs(RESULT_DIR)
 
 INDEX_URL = 'https://spa2.scrape.center/page/{page}'
 TIMEOUT = 10
 TOTAL_PAGE = 10
 RESULTS_DIR = 'results'
 
-options = Options()
-options.add_experimental_option('useAutomationExtension', False)
-options.add_experimental_option("excludeSwitches", ['enable-automation'])
+options = webdriver.ChromeOptions()
+options.add_argument('--headless')
 
-browser = webdriver.Chrome(chrome_options=options)
+browser = webdriver.Chrome(options=options)
 wait = WebDriverWait(browser, TIMEOUT)
+
+
+def sava_data(data):
+    name = data.get('name')
+    data_path = f'{RESULTS_DIR}/{name}.json'
+    json.dump(data, open(data_path, 'w', encoding='utf-i'), ensure_ascii=False, indent=2)
 
 
 def scrape_page(url, condition, locator):
@@ -83,6 +95,7 @@ def main():
                 scrape_detail(detail_url)
                 detail_data = parse_detail()
                 logging.info('detail data %s', detail_data)
+                sava_data(detail_data)
     finally:
         browser.close()
 
